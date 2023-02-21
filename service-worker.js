@@ -1,12 +1,15 @@
 // This code executes in its own worker or thread
-self.addEventListener('install', (ev) => {
-	ev.registerForeignFetch({
-		scopes: [self.registration.scope], // or some sub-scope
-		origins: ['*'] // or ['https://example.com']
-	});
+self.addEventListener('install', (event) => {
+
 	//service worker has been installed.
 	//Extendable Event
 	console.log('installed');
+
+	event.waitUntil(
+		caches.open('test')
+			.then(cache => cache.addAll('test'))
+			.then(self.skipWaiting())
+	);
 
 	self.skipWaiting();
 });
